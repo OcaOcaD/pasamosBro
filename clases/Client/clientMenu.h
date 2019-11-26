@@ -1,7 +1,9 @@
 #include <iostream>
+#include <vector>
 #include <fstream>
 #include <sstream>
 #include "./Client.h"
+
 using namespace std;
 //********************************** Some data types used int he lists
 struct Word{
@@ -16,11 +18,13 @@ struct Index_row{
 };
 //********************************** Declaration of the functions used
 vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, vector<Index_row>& index );
-void initializeClients( vector<Client>& clients_book, vector<Word>& vocabulary, vector<Index_row>& index );
-void saveClient( Client c, vector<Word>& vocabulary, vector<Index_row>& index, vector<Client>& clients_book );    //Do the pushes in all the lists correctly
-    void replaceVocabularyFile( vector<Word> vocabulary );
-        int inVocabulary( vector<Word>& vocabulary, string searchedWord );
-    void replaceIndexFile( vector<Index_row> index );
+void initializeClients( vector<Word>& vocabulary, vector<Index_row>& index );  
+// Do the pushes in all the lists correctly 
+// vector<Client>& clients_book
+void saveClient( Client c, vector<Word>& vocabulary, vector<Index_row>& index ); 
+void replaceVocabularyFile( vector<Word> vocabulary );
+int inVocabulary( vector<Word>& vocabulary, string searchedWord );
+void replaceIndexFile( vector<Index_row> index );
 //Utility
 int stringToInt( string n );
 int getTotalClients();

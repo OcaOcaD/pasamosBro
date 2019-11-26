@@ -11,16 +11,16 @@ class Client
     public:
         Client();
         Client( string phone);
-        //GETS
-        string get_phone();
-        string get_name();
-        string get_lastname();
-        string get_address();
         //SETS
         void set_phone( string phone );
         void set_name( string name );
         void set_lastname( string lastname );
         void set_address( string address );
+        //GETS
+        string get_phone();
+        string get_name();
+        string get_lastname();
+        string get_address();
         //Normal methods
         bool askForData(  );  //Asks the user for data and builds up a client. returns false if the id alredy exists(phone)
         void show();
