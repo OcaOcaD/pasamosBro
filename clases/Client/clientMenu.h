@@ -16,8 +16,8 @@ struct Index_row{
 };
 //********************************** Declaration of the functions used
 vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, vector<Index_row>& index );
-void initializeClients( vector<Client>& clients_book, vector<Word>& vocabulary, vector<Index_row>& index );
-void saveClient( Client c, vector<Word>& vocabulary, vector<Index_row>& index, vector<Client>& clients_book );    //Do the pushes in all the lists correctly
+void initializeClients( vector<Word>& vocabulary, vector<Index_row>& index );
+void saveClient( Client c, vector<Word>& vocabulary, vector<Index_row>& indexd );    //Do the pushes in all the lists correctly
     void replaceVocabularyFile( vector<Word> vocabulary );
         int inVocabulary( vector<Word>& vocabulary, string searchedWord );
     void replaceIndexFile( vector<Index_row> index );
@@ -72,7 +72,7 @@ void clientsMenu(){
                             cin >> search_string;
                             results = recoverClient( search_string, vocabulary, index );
                             for( int i = 0; i < results.size(); i++ ){
-                                results[i].show();
+                                // results[i].show();
                             }
                             break;
                         }
@@ -81,7 +81,7 @@ void clientsMenu(){
                             cin >> search_string;
                             results = recoverClient( search_string, vocabulary, index  );
                             for( int i = 0; i < results.size(); i++ ){
-                                results[i].show();
+                                // results[i].show();
                             }
                             break;
                         }
@@ -90,7 +90,7 @@ void clientsMenu(){
                             cin >> search_string;
                             results = recoverClient( search_string, vocabulary, index  );
                             for( int i = 0; i < results.size(); i++ ){
-                                results[i].show();
+                                // results[i].show();
                             }
                             break;
                         }
@@ -106,11 +106,15 @@ void clientsMenu(){
                 } while ( search_client_opt != 4 );
                 break;
             }//*************************** Search for client
-            
-            /*
-                ...other cases...
-            */
+            case 3:{
+                //Modify client
 
+                break;
+            }//*************************** Modify for client
+            case 4:{
+                //Delete client
+                break;
+            }//*************************** Delete for client
             case 5:{
                 cout << "_____________________________________________" << endl; 
                 cout << "Vocabulario: " << endl;
@@ -140,7 +144,7 @@ void clientsMenu(){
                 break;
             }
         }   //End of clients switchmenu
-    } while (  client_opt != 5 );
+    } while (  client_opt != 6 );
 }//End of clients
 
 //********************************** Definitions of some functions used up in clients program
@@ -264,7 +268,9 @@ vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, ve
         string path = "clases/Client/clients_book.txt";
         int position;
         char data = '\0';
-        string client_register = "";
+        string client_register = "";            //String readed from the file
+        string phone, name, lastname, address; //substrings from the client register
+        Client c;
         int counter;
         inFile.open( path.c_str(), ios::app );
         if ( !inFile.fail() ){
@@ -277,11 +283,32 @@ vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, ve
                     data = '\0';
                     counter--;
                 }
-                cout << client_register << endl;
-                
+                for( int j = 0; j < 10; j++ ){
+                    //First 10 are phone
+                    phone += client_register[j];
+                }
+                for( int j = 10; j < 25; j++ ){
+                    //First 25 are name
+                    name += client_register[j];
+                }
+                for( int j = 35; j < 60; j++ ){
+                    //First 25 are lastname
+                    lastname += client_register[j];
+                }
+                for( int j = 60; j < 85; j++ ){
+                    //First 25 are address
+                    address += client_register[j];
+                }
+                //Build the client and then push it to the lsit
+                c.set_phone( phone );
+                c.set_name( name );
+                c.set_lastname( lastname );
+                c.set_address( address );
+                c.show();
+                results.push_back( c );
             }
-            
         }
+        return results;
     }else{
         //Doesn't exists. add it
         return results;
