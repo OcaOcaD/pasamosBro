@@ -3,6 +3,9 @@
 #include <sstream>
 #include "./Client.h"
 using namespace std;
+
+
+
 //********************************** Some data types used int he lists
 struct Word{
     //Secondary index. Has words and its position in the indexes file.
@@ -24,6 +27,7 @@ void saveClient( Client c, vector<Word>& vocabulary, vector<Index_row>& indexd )
 //Utility
 int stringToInt( string n );
 int getTotalClients();
+
 //********************************** Main clients program
 void clientsMenu(){
     bool exit_client_menu = false;
@@ -226,10 +230,12 @@ void saveClient( Client c, vector<Word>& vocabulary, vector<Index_row>& index ){
     string file_path = "./clases/Client/clients_book.txt";
     //Saving to vocabulary and index all the phone, name and lastname of the new client if they doesn't exist
     int nrr = getTotalClients();
+    ofstream t;
     addToVocabularyAndIndex( c.get_phone(), vocabulary, index, nrr );
     addToVocabularyAndIndex( c.get_name(), vocabulary, index, nrr );
     addToVocabularyAndIndex( c.get_lastname(), vocabulary, index, nrr );
-    ofstream t;
+    replaceVocabularyFile( vocabulary );
+    replaceIndexFile( index );
     t.open(file_path.c_str(), std::ios::app);
     t << c.saveString() << endl;
 }
@@ -258,6 +264,7 @@ vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, ve
     vector<int> nrr_coincidences;
     int pi = inVocabulary( vocabulary, search_string );    //Position in index
     if( pi != -1 ){
+        nrr_coincidences.push_back( index[pi].nrr );
         //Exists in vocabulary. For every ocurrence. push a new nrr
         while( index[pi].next != -1 ){
             nrr_coincidences.push_back( index[pi].nrr );
@@ -276,9 +283,9 @@ vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, ve
         if ( !inFile.fail() ){
             position = inFile.tellg();
             for( int i = 0; i < nrr_coincidences.size(); i++ ){
-                inFile.seekg( nrr_coincidences[i]*85 + 1 );      //Read the register of the coincidences
+                inFile.seekg( nrr_coincidences[i]*85 );      //Read the register of the coincidences
                 counter = 85;                                    //The register has 85 chars
-                while( inFile >> data && counter != 0 ){
+                while( inFile >> noskipws >> data && counter != 0 ){
                     client_register += data;
                     data = '\0';
                     counter--;
@@ -286,18 +293,22 @@ vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, ve
                 for( int j = 0; j < 10; j++ ){
                     //First 10 are phone
                     phone += client_register[j];
+                    // cout << "phone: " << phone << endl;
                 }
                 for( int j = 10; j < 25; j++ ){
                     //First 25 are name
                     name += client_register[j];
+                    // cout << "name: " << name << endl;
                 }
                 for( int j = 35; j < 60; j++ ){
                     //First 25 are lastname
                     lastname += client_register[j];
+                    // cout << "lastname: " << lastname << endl;
                 }
                 for( int j = 60; j < 85; j++ ){
                     //First 25 are address
                     address += client_register[j];
+                    // cout << "address: " << address << endl;
                 }
                 //Build the client and then push it to the lsit
                 c.set_phone( phone );
@@ -311,6 +322,7 @@ vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, ve
         return results;
     }else{
         //Doesn't exists. add it
+        cout << "No se encontraron coincidencias" << endl;
         return results;
     }
 }
@@ -323,18 +335,16 @@ int stringToInt( string n ){
     return number;
 }
 int getTotalClients(){
-    //Reading vocabulary and filling the vocabulary list
-    ifstream inFile;
     string path = "./clases/Client/clients_book.txt";
-    char data = '\0';
-    int linecount = 0;
-    inFile.open( path.c_str(), ios::app );
-    if ( !inFile.fail() ){
-        while( inFile >> data ){
-            if( data == '\n' )
-                linecount++;
-        }
-        cout << "THERE ARE " << linecount << "lines" << endl;
-        return linecount;
+    string s;
+    int sTotal = -1;
+    ifstream in;
+    in.open(path.c_str());
+    while(!in.eof()) {
+        getline(in, s);
+        sTotal ++;	
     }
+    cout << "THERE ARE " << sTotal << "lines" << endl;
+    in.close();	
+    return sTotal;
 }

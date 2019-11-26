@@ -1,6 +1,0 @@
-222 0
-pedro 1
-garicia 2
-5656 3
-juan 4
-garcia 5
