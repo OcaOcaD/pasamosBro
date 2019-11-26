@@ -1,0 +1,3 @@
+Garcia 0
+Castro 1
+Perez 2
