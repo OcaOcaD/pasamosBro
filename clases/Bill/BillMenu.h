@@ -25,6 +25,7 @@ int bill_menu()
     string name;
     vector<Bill> bills;
     vector<Productos> inventory;
+    
     init_inventory(inventory);
     init_registry(bills);
 

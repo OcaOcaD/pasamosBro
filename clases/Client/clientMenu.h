@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "./Client.h"
+#include "Client.h"
 
 using namespace std;
 
@@ -25,7 +25,9 @@ void initializeClients( vector<Word>& vocabulary, vector<Index_row>& index );
 // Do the pushes in all the lists correctly 
 // vector<Client>& clients_book
 void saveClient( Client c, vector<Word>& vocabulary, vector<Index_row>& index ); 
-
+Client getClientInfo( int nrr );
+void deleteClient( int nrr, Client oldClient, vector<Index_row>& index, vector<Word>& vocabulary );
+void modifyClient( int nrr, Client oldClient, Client newClient, vector<Index_row>& index, vector<Word>& vocabulary );
 void replaceVocabularyFile( vector<Word> vocabulary );
 int inVocabulary( vector<Word>& vocabulary, string searchedWord );
 void replaceIndexFile( vector<Index_row> index );

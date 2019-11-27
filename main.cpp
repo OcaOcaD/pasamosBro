@@ -35,10 +35,11 @@ int main(int argc, char const *argv[])
             }
             case 5:{
                 //Clients || inverted indexes
-                // clientsMenu();
+                clientsMenu();
                 break;
             }
             case 7:{
+                // bill_menu();
                 bill_menu();
                 break;
             }
