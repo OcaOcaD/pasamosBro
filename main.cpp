@@ -33,46 +33,23 @@ int main(int argc, char const *argv[])
                 //Products || Dimention fields
                 productsMenu();
             }
-        /*
-            ...other cases...
-        */
-<<<<<<< HEAD
-        case 5:{
-            //Clients || inverted indexes
-            clientsMenu();
-            break;
-        }
-        case 7:{
-            bill_menu();
-            break;
-        }
-        /*
-            ...other cases...
-        */
-        case 9:{
-            return 0;
-            break;
-        }
-        default:{
-            std::cout << "xd" << std::endl;
-        }
-        }
-=======
             case 5:{
                 //Clients || inverted indexes
                 clientsMenu();
                 break;
             }
-            /*
-                ...other cases...
-            */
+            case 7:{
+                bill_menu();
+                break;
+            }
             case 9:{
                 return 0;
                 break;
             }
+            default:{
+                std::cout << "xd" << std::endl;
+            }
         }
->>>>>>> master
-    } while ( opt != 9 );
-    
+    }while( opt != 9 );
     return 0;
 }
