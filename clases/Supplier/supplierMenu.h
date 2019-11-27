@@ -230,8 +230,8 @@ int uSure(){
 		cout << "\t Seguro de borrar el proveedor?" << endl;
 		cout << "\t1)Si, deseo borrar el proveedor" << endl;
 		cout << "\t2)No, cancelar" << endl;
+		cin.sync();
 		cin >> ans;
-		ans = getch();
 		switch( ans ){
 			case 1: {
 				return 1;
