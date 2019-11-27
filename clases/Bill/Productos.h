@@ -82,7 +82,7 @@ void Productos::set_quantity(int quantity)
 {
     this->quantity = quantity;
 }
-void Product::set_price(float price)
+void Productos::set_price(float price)
 {
     this->price = price;
 }

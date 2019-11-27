@@ -15,7 +15,7 @@ class Bill
         int id;
         int idClient;
         float mount = 0.0;
-        std::vector<std::pair<int, Productos>> Productos;
+        std::vector<std::pair<int, Productos>> productos;
     public:
         Bill(){};
         ~Bill();
@@ -70,7 +70,7 @@ Bill::~Bill()
     this->id = 0;
     this->idClient = 0;
     this->mount = 0.0;
-    this->products.clear();
+    this->productos.clear();
 }
 std::vector<Bill> load_bills()
 {
@@ -181,7 +181,7 @@ void Bill::set_mount(float mount)
 }
 void Bill::set_products(std::vector<std::pair<int, Productos>> p)
 {
-    this->products = p;
+    this->productos = p;
 }
 void Bill::increase_mount(float money)
 {
@@ -192,11 +192,11 @@ void Bill::add_product(Productos p, int quantity)
     int index = find_product(p);
     if(index == -1)
     {
-        this->products.push_back(std::make_pair(quantity,p));
+        this->productos.push_back(std::make_pair(quantity,p));
     }
     else
     {
-        this->products[index].first += quantity;
+        this->productos[index].first += quantity;
     }
     increase_mount(p.get_price()*quantity);   
 }
@@ -215,7 +215,7 @@ float Bill::get_mount()
 }
 std::vector<std::pair<int, Productos>> Bill::get_products()
 {
-    return this->products;
+    return this->productos;
 }
 //FUNCTIONS
 int Bill::find_product(Productos p)
