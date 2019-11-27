@@ -1,21 +1,21 @@
 #include "Bill.h"
-#include "Product.h"
+#include "Productos.h"
 #include <string>
 #include <algorithm>
 
 using namespace std;
 
 void menu();
-void print_inventory(vector<Product>& inventory);
+void print_inventory(vector<Productos>& inventory);
 void print_bills(vector<Bill>& bills);
-Bill still_buying(vector<Product>& inventory, vector<Bill>& bills, int& quantity);
-Product pick_product(vector<Product>& inventory, int& quantity);
-Product search_product(vector<Product>& inventory, string&, int&);
-void init_inventory(vector<Product>& inventory);
+Bill still_buying(vector<Productos>& inventory, vector<Bill>& bills, int& quantity);
+Productos pick_product(vector<Productos>& inventory, int& quantity);
+Productos search_product(vector<Productos>& inventory, string&, int&);
+void init_inventory(vector<Productos>& inventory);
 void init_registry(vector<Bill>& bills);
 void erase_bill(vector<Bill>& bills);
 void search_bill(vector<Bill>& bills, int id);
-void modify_bill(vector<Bill>& bills, int id, vector<Product>& inventory, int& quantity);
+void modify_bill(vector<Bill>& bills, int id, vector<Productos>& inventory, int& quantity);
 void reset_idBill(vector<Bill>& bills);
 
 int bill_menu()
@@ -24,7 +24,7 @@ int bill_menu()
     int quantity;
     string name;
     vector<Bill> bills;
-    vector<Product> inventory;
+    vector<Productos> inventory;
     init_inventory(inventory);
     init_registry(bills);
 
@@ -88,7 +88,7 @@ void menu()
          << "\t6)Salir" << endl << endl
          << "Elija una opcion:  ";
 }
-Bill still_buying(vector<Product>& inventory, vector<Bill>& bills, int& quantity)
+Bill still_buying(vector<Productos>& inventory, vector<Bill>& bills, int& quantity)
 {        
     string opc;        
     Bill bill = Bill(bills.size()+1, 69);
@@ -110,7 +110,7 @@ Bill still_buying(vector<Product>& inventory, vector<Bill>& bills, int& quantity
 
     return bill;
 }
-Product pick_product(vector<Product>& inventory, int& quantity)
+Productos pick_product(vector<Productos>& inventory, int& quantity)
 {
     string name;
     cout << "Ingrese el nombre del producto: ";
@@ -120,9 +120,9 @@ Product pick_product(vector<Product>& inventory, int& quantity)
     cin >> quantity;
     return search_product(inventory, name, quantity);
 }
-Product search_product(vector<Product>& inventory, string& name, int& quantity)
+Productos search_product(vector<Productos>& inventory, string& name, int& quantity)
 {
-    Product p = Product();
+    Productos p = Productos();
     int cont = 0;
     for(auto elem : inventory)
     {
@@ -140,7 +140,7 @@ Product search_product(vector<Product>& inventory, string& name, int& quantity)
     }
     return p;
 }
-void print_inventory(vector<Product>& inventory)
+void print_inventory(vector<Productos>& inventory)
 {
     cout << "\t************ Productos ************" << endl;
     for(auto elem : inventory)
@@ -161,7 +161,7 @@ void init_registry(vector<Bill>& b)
 {
     b = load_bills();
 }
-void init_inventory(vector<Product>& p)
+void init_inventory(vector<Productos>& p)
 {
     p = load_products();
 }
@@ -181,7 +181,7 @@ void erase_bill(vector<Bill>& bills)
     else
         cout << "No existe ese id" << endl;
 }
-void modify_bill(vector<Bill>& bills, int id, vector<Product>& inventory, int& quantity)
+void modify_bill(vector<Bill>& bills, int id, vector<Productos>& inventory, int& quantity)
 {
     if(id >= 0 && id <= bills.size())
     {

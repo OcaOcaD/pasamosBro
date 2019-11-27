@@ -15,7 +15,7 @@ class Bill
         int id;
         int idClient;
         float mount = 0.0;
-        std::vector<std::pair<int, Product>> products;
+        std::vector<std::pair<int, Productos>> Productos;
     public:
         Bill(){};
         ~Bill();
@@ -25,18 +25,18 @@ class Bill
         void set_id(int id);
         void set_idClient(int idClient);
         void set_mount(float mount);
-        void set_products(std::vector<std::pair<int, Product>> p);
+        void set_products(std::vector<std::pair<int, Productos>> p);
         void increase_mount(float money);
-        void add_product(Product p, int quantity);
+        void add_product(Productos p, int quantity);
         //GETTERS
         int get_id() const;
         int get_idClient();
         float get_mount();
-        std::vector<std::pair<int, Product>> get_products();
+        std::vector<std::pair<int, Productos>> get_products();
         //FUNCTIONS
         void save();
         friend std::vector<Bill> load_bills();
-        int find_product(Product p);
+        int find_product(Productos p);
         bool is_file_empty();
         void print_bill();
         friend void reload_bills(std::vector<Bill>& b);
@@ -74,7 +74,7 @@ Bill::~Bill()
 }
 std::vector<Bill> load_bills()
 {
-    Product p;
+    Productos p;
     Bill b;
     size_t pos;
     std::vector<Bill> bills{};
@@ -111,7 +111,7 @@ std::vector<Bill> load_bills()
                 {
                     getline(file, aux);
                     tmp += aux;
-                    p = Product(lines);
+                    p = Productos(lines);
                     if(tmp != "\0")
                     {
                         pos = tmp.find("earned:");
@@ -179,7 +179,7 @@ void Bill::set_mount(float mount)
 {
     this->mount = mount;
 }
-void Bill::set_products(std::vector<std::pair<int, Product>> p)
+void Bill::set_products(std::vector<std::pair<int, Productos>> p)
 {
     this->products = p;
 }
@@ -187,7 +187,7 @@ void Bill::increase_mount(float money)
 {
     this->mount += money;
 }
-void Bill::add_product(Product p, int quantity)
+void Bill::add_product(Productos p, int quantity)
 {
     int index = find_product(p);
     if(index == -1)
@@ -213,12 +213,12 @@ float Bill::get_mount()
 {
     return this->mount;
 }
-std::vector<std::pair<int, Product>> Bill::get_products()
+std::vector<std::pair<int, Productos>> Bill::get_products()
 {
     return this->products;
 }
 //FUNCTIONS
-int Bill::find_product(Product p)
+int Bill::find_product(Productos p)
 {
     int cont = 0;
     for(auto elem : get_products())
