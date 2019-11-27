@@ -1,6 +1,12 @@
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
+// const string WHITESPACE = " \n\r\t\f\v";
+// string ltrim(const string& s);
+// string rtrim(const string& s);
+// string trim(const string& s);
+
 class Client
 {
     private:
@@ -90,7 +96,7 @@ bool Client::askForData(  ){
 }
 void Client::show(){
     cout << "Cliente: " << this->phone << endl;
-    cout << "\t" << this->name << " " << this->lastname << " --- " << this->address << endl;
+    cout << "\t" << trim(this->name) << " " << trim(this->lastname) << " --- " << trim(this->address) << endl;
     cout << "_______________________________________________" << endl;
 }
 /*  Returns the string that is gonna be written in the file. The form is the next 
@@ -130,3 +136,17 @@ string Client::saveString(){
     aux_string = "";                //clear
     return client_string;
 }
+
+
+//utilities
+// string ltrim(const string& s){
+// 	size_t start = s.find_first_not_of(WHITESPACE);
+// 	return (start == string::npos) ? "" : s.substr(start);
+// }
+// string rtrim(const string& s){
+// 	size_t end = s.find_last_not_of(WHITESPACE);
+// 	return (end == string::npos) ? "" : s.substr(0, end + 1);
+// }
+// string trim(const string& s){
+// 	return rtrim(ltrim(s));
+// }
