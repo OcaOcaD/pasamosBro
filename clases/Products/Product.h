@@ -1,9 +1,10 @@
-#ifndef Product_H
-#define Product_H
+#ifndef PRODUCT_H_INCLUDED
+#define PRODUCT_H_INCLUDED
 
 #include <string>
 #include <sstream>
 #include <iostream>
+
 using namespace std;
 
 class Product
@@ -132,4 +133,4 @@ void Product::buildPrice(){
 	ss >> s;  
 	this->price = s;
 };
-#endif // Product_H
+#endif // PRODUCT_H_INCLUDED

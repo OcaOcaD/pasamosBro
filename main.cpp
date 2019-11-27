@@ -1,10 +1,10 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include "clases/Bill/BillMenu.h"
+// #include "clases/Bill/BillMenu.h"
 #include "clases/Supplier/supplierMenu.h"
 #include "clases/Products/productsMenu.h"
-// #include "clases/Client/clientMenu.h"
+#include "clases/Client/clientMenu.h"
 
 using namespace std;
 
@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
                 break;
             }
             case 7:{
-                bill_menu();
+                // bill_menu();
                 break;
             }
             case 9:{
