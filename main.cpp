@@ -1,15 +1,9 @@
 #include <vector>
 #include <iostream>
-<<<<<<< HEAD
 #include <fstream>
 #include "clases/Bill/BillMenu.h"
-=======
 #include "clases/Supplier/supplierMenu.h"
 #include "clases/Products/productsMenu.h"
-
-
-
->>>>>>> master
 #include "clases/Client/clientMenu.h"
 
 using namespace std;
