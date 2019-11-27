@@ -1,0 +1,60 @@
+id:1
+Id Cliente:69
+%
+name:judias
+description:horneadas
+quantity:53
+price:666.000000
+earned:1
+%
+name:anos
+description:culos
+quantity:371
+price:18.000000
+earned:2
+%
+Monto:702.000000
+
+id:2
+Id Cliente:69
+%
+name:tits
+description:culos
+quantity:371
+price:18.000000
+earned:2
+%
+Monto:36.000000
+
+id:3
+Id Cliente:69
+%
+name:tetas
+description:ricas
+quantity:4882
+price:10.000000
+earned:3
+%
+Monto:30.000000
+
+id:4
+Id Cliente:69
+%
+name:judias
+description:horneadas
+quantity:33
+price:666.000000
+earned:20
+%
+Monto:13320.000000
+
+id:5
+Id Cliente:69
+%
+name:prolapso
+description:anal
+quantity:58
+price:1.000000
+earned:1
+%
+Monto:1.000000

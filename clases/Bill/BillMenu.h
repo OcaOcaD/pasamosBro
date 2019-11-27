@@ -1,18 +1,33 @@
-// #include "Bill.h"
+#include "Bill.h"
 #include "Product.h"
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
 void menu();
 void print_inventory(vector<Product>& inventory);
+void print_bills(vector<Bill>& bills);
+Bill still_buying(vector<Product>& inventory, vector<Bill>& bills, int& quantity);
+Product pick_product(vector<Product>& inventory, int& quantity);
+Product search_product(vector<Product>& inventory, string&, int&);
 void init_inventory(vector<Product>& inventory);
+void init_registry(vector<Bill>& bills);
+void erase_bill(vector<Bill>& bills);
+void search_bill(vector<Bill>& bills, int id);
+void modify_bill(vector<Bill>& bills, int id, vector<Product>& inventory, int& quantity);
+void reset_idBill(vector<Bill>& bills);
 
 int bill_menu()
 {
     int client_opt;
+    int quantity;
+    string name;
+    vector<Bill> bills;
     vector<Product> inventory;
     init_inventory(inventory);
+    init_registry(bills);
+
     do
     {
         menu();
@@ -20,19 +35,34 @@ int bill_menu()
         switch(client_opt)
         {
             case 1:{
-                print_inventory(inventory);
+                Bill b = still_buying(inventory, bills, quantity);
+                bills.push_back(b);
+                reload_bills(bills);
                 break;
             }
             case 2:{
+                print_bills(bills);
                 break;
             }
             case 3:{
+                int id;
+                cout << "Ingrese el id de la factura a buscar -> ";
+                cin.sync();
+                cin >> id;
+                search_bill(bills, id);
                 break;
             }
             case 4:{
+                int id;
+                print_bills(bills);
+                cout << "Ingrese el id de la factura a modificar -> ";
+                cin.sync();
+                cin >> id;
+                modify_bill(bills, id, inventory, quantity);
                 break;
             }
             case 5:{
+                erase_bill(bills);
                 break;
             }
             case 6:{
@@ -58,6 +88,58 @@ void menu()
          << "\t6)Salir" << endl << endl
          << "Elija una opcion:  ";
 }
+Bill still_buying(vector<Product>& inventory, vector<Bill>& bills, int& quantity)
+{        
+    string opc;        
+    Bill bill = Bill(bills.size()+1, 69);
+    do
+    {
+        print_inventory(inventory);
+        auto p = pick_product(inventory, quantity);
+        if(p.get_quantity() == -1)
+            cout << "No existe el producto";
+        else
+        {
+            bill.add_product(p, quantity);
+            
+        }
+        cout << endl << "Quiere agregar otro? y/n ";
+        cin.sync();
+        getline(cin, opc);
+    }while(opc == "y");
+
+    return bill;
+}
+Product pick_product(vector<Product>& inventory, int& quantity)
+{
+    string name;
+    cout << "Ingrese el nombre del producto: ";
+    cin.sync();
+    getline(cin, name);
+    cout << "Cantidad a comprar: ";
+    cin >> quantity;
+    return search_product(inventory, name, quantity);
+}
+Product search_product(vector<Product>& inventory, string& name, int& quantity)
+{
+    Product p = Product();
+    int cont = 0;
+    for(auto elem : inventory)
+    {
+        if(elem == name)
+        {
+            if(elem.get_quantity() >= quantity)
+            {
+                elem.set_quantity(elem.get_quantity()-quantity);
+                replace(inventory.begin(), inventory.end(), inventory[cont],elem);
+                reload_product(inventory);
+                return elem;
+            }
+        }
+        cont++;
+    }
+    return p;
+}
 void print_inventory(vector<Product>& inventory)
 {
     cout << "\t************ Productos ************" << endl;
@@ -65,7 +147,62 @@ void print_inventory(vector<Product>& inventory)
         cout << elem << endl;
     cout << "\t***********************************" << endl;
 }
+void print_bills(vector<Bill>& bills)
+{
+    cout << "\t************ Facturas ************" << endl;
+    for(auto elem : bills)
+    {
+        elem.print_bill();
+        cout << endl;
+    } 
+    cout << "\t***********************************" << endl;
+}
+void init_registry(vector<Bill>& b)
+{
+    b = load_bills();
+}
 void init_inventory(vector<Product>& p)
 {
     p = load_products();
+}
+void erase_bill(vector<Bill>& bills)
+{
+    int index;
+    print_bills(bills);
+    cout << "Ingrese el id de la factura -> ";
+    cin.sync();
+    cin>>index;
+    if(index >= 0 && index <= bills.size())
+    {
+        bills.erase(bills.begin()+index-1);
+        reset_idBill(bills);
+        reload_bills(bills);
+    }
+    else
+        cout << "No existe ese id" << endl;
+}
+void modify_bill(vector<Bill>& bills, int id, vector<Product>& inventory, int& quantity)
+{
+    if(id >= 0 && id <= bills.size())
+    {
+        Bill b = still_buying(inventory, bills, quantity);
+        bills.erase(bills.begin()+id-1);
+        bills.insert(bills.begin()+id, b);
+        reset_idBill(bills);
+        reload_bills(bills);
+    }
+    else
+        cout << "No existe ese id" << endl;
+}
+void search_bill(vector<Bill>& bills, int id)
+{
+    if(id >= 0 && id <= bills.size())
+        bills[id-1].print_bill();
+    else
+        cout << "No existe ese id" << endl;
+}
+void reset_idBill(vector<Bill>& bills)
+{
+    for(int cont = 0; cont < bills.size(); cont++)
+        bills[cont].set_id(cont+1);
 }

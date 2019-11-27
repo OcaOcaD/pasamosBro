@@ -16,7 +16,6 @@ class Product
         float price;
     public:
         Product();
-        // Product(Product& product);
         Product(const std::string& line);
         Product(std::string name, std::string description, int quantity, float price);
         //SETTERS
@@ -25,23 +24,25 @@ class Product
         void set_quantity(int quantity);
         void set_price(float price);
         //GETTERS
-        std::string get_name();
-        std::string get_description();
-        float get_price();
-        int get_quantity();
+        std::string get_name() const;
+        std::string get_description() const;
+        float get_price() const;
+        int get_quantity() const;
         //FUNCTIONS
         void save();
         bool is_file_empty();
+        friend void reload_product(std::vector<Product>& p);
         friend std::vector<Product> load_products();
         //OVERLOADS
         friend std::ostream &operator<<(std::ostream &os, Product& obj);
         friend std::istream &operator>>(std::istream &is, Product& obj);
-        friend bool operator==(Product &obj, Product &obj1);
+        friend bool operator==(const Product &obj, const Product &obj1);
+        friend bool operator==(Product &obj, std::string &name);
 };
 
 Product::Product()
 {
-
+    this->quantity = -1;
 }
 Product::Product(const std::string &line)
 {
@@ -62,13 +63,6 @@ Product::Product(const std::string &line)
     set_price(std::stof(aux));
     getline(stream, aux, '\n');
 }
-// Product::Product(Product& product)
-// {
-//     set_name(product.get_name());
-//     set_description(product.get_description());
-//     set_quantity(product.get_quantity());
-//     set_price(product.get_price());
-// }
 Product::Product(std::string name, std::string description, int quantity, float price)
 {
     set_name(name);
@@ -92,26 +86,30 @@ void Product::set_price(float price)
 {
     this->price = price;
 }
-std::string Product::get_name()
+std::string Product::get_name() const
 {
     return this->name;
 }
-std::string Product::get_description()
+std::string Product::get_description() const
 {
     return this->description;
 }
-float Product::get_price()
+float Product::get_price() const
 {
     return this->price;
 }
-int Product::get_quantity()
+int Product::get_quantity() const
 {
     return this->quantity;
 }
-
+void reload_product(std::vector<Product>& p)
+{
+    std::remove("./clases/Bill/product.txt");
+    for(auto elem : p)
+        elem.save();
+}
 void Product::save()
 {
-    bool state;
     std::ofstream file("./clases/Bill/product.txt", std::ios::app);
     if (!file.is_open())
         std::cout << "No se pudo abrir el archivo" << std::endl;
@@ -121,6 +119,7 @@ void Product::save()
             file << std::endl;
         file << *this;
     }
+    file.close();
 }
 std::vector<Product> load_products()
 {
@@ -180,10 +179,17 @@ std::istream &operator>>(std::istream &is, Product& obj)
 
     return is;
 }
-bool operator==(Product &obj, Product &obj1)
+bool operator==(const Product &obj, const Product &obj1)
 {
     if(obj.get_name() == obj1.get_name())
          return true;
     return false;
+}
+bool operator==(Product &obj, std::string &name)
+{
+    if(obj.get_name() == name)
+        return true;
+    else
+        return false;
 }
 #endif // PRODUCT_H_INCLUDED
