@@ -123,6 +123,7 @@ void Productos::save()
 }
 std::vector<Productos> load_products()
 {
+    std::cout << "sad" << std::endl;
     std::string aux, lines;
     std::vector<Productos> products{};
     std::ifstream file("./clases/Bill/product.txt", std::ios::app);
