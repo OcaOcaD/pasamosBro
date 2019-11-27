@@ -4,8 +4,6 @@
 #include "./Client.h"
 using namespace std;
 
-
-
 //********************************** Some data types used int he lists
 struct Word{
     //Secondary index. Has words and its position in the indexes file.
@@ -18,15 +16,19 @@ struct Index_row{
     int next;
 };
 //********************************** Declaration of the functions used
-vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, vector<Index_row>& index );
 void initializeClients( vector<Word>& vocabulary, vector<Index_row>& index );
 void saveClient( Client c, vector<Word>& vocabulary, vector<Index_row>& indexd );    //Do the pushes in all the lists correctly
-    void replaceVocabularyFile( vector<Word> vocabulary );
-        int inVocabulary( vector<Word>& vocabulary, string searchedWord );
-    void replaceIndexFile( vector<Index_row> index );
+vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, vector<Index_row>& index );
+Client getClientInfo( int nrr );
+void modifyClient( int nrr, Client oldClient, Client newClient, vector<Index_row>& index, vector<Word>& vocabulary );
+void deleteClient( int nrr, Client oldClient, vector<Index_row>& index, vector<Word>& vocabulary );
+void deleteFromVocabularyAndIndex( vector<Index_row>& index, vector<Word>& vocabulary, string word );
+void replaceVocabularyFile( vector<Word> vocabulary );
+int inVocabulary( vector<Word>& vocabulary, string searchedWord );
+void replaceIndexFile( vector<Index_row> index );
 //Utility
-int stringToInt( string n );
-int getTotalClients();
+
+int getTotalClients();  //returns the nrr based on the number of registers in the file
 
 //********************************** Main clients program
 void clientsMenu(){
@@ -112,11 +114,42 @@ void clientsMenu(){
             }//*************************** Search for client
             case 3:{
                 //Modify client
-
+                string m_phone = "";
+                Client oldClient;
+                int pi, nrr;    //position in index and nrr
+                Client newClient;
+                cout << " Inserta tel telefono del cliente a modificar" << endl;
+                cin >> m_phone;
+                pi = inVocabulary( vocabulary, m_phone );   //If the phone is in the vocabulary. Get the position in the index to recover the nrr
+                if( pi != -1 ){
+                    //Search the position in the index
+                    nrr = index[pi].nrr;
+                    //Ask for the new info
+                    oldClient = getClientInfo( nrr );
+                    newClient.askForData();
+                    modifyClient(nrr, oldClient, newClient, index, vocabulary );
+                }else{
+                    cout << "No hay conincidencias" << endl;
+                }
                 break;
             }//*************************** Modify for client
             case 4:{
                 //Delete client
+                string m_phone = "";
+                Client oldClient;
+                int pi, nrr;    //position in index and nrr
+                Client newClient;
+                cout << " Inserta tel telefono del cliente a modificar" << endl;
+                cin >> m_phone;
+                pi = inVocabulary( vocabulary, m_phone );   //If the phone is in the vocabulary. Get the position in the index to recover the nrr
+                if( pi != -1 ){
+                    //Search the position in the index
+                    nrr = index[pi].nrr;
+                    oldClient = getClientInfo( nrr );
+                    deleteClient( nrr, oldClient, index, vocabulary );
+                }else{
+                    cout << "No hay conincidencias" << endl;
+                }
                 break;
             }//*************************** Delete for client
             case 5:{
@@ -199,10 +232,34 @@ void initializeClients(  vector<Word>& vocabulary, vector<Index_row>& index ){
 }
 int inVocabulary( vector<Word>& vocabulary, string searchedWord ){
     for( size_t i = 0; i < vocabulary.size(); i++ ){
-        if( vocabulary[i].word == searchedWord )
+        if( trim(vocabulary[i].word) == trim(searchedWord) )
             return vocabulary[i].position_in_index;
     }
     return -1;
+}
+void deleteFromVocabularyAndIndex( vector<Index_row>& index, vector<Word>& vocabulary, string word ){
+    int pi = -69;
+    int oldpi;
+    for( size_t i = 0; i < vocabulary.size(); i++ ){
+        // cout << trim(vocabulary[i].word) <<"is not"<< trim(word) << endl;
+        if( trim(vocabulary[i].word) == trim(word) ){
+            // cout << "it is" << endl;
+            vocabulary[i].word = "#deleted#";
+            pi = vocabulary[i].position_in_index;
+            vocabulary[i].position_in_index = -1;
+            break;
+        }
+    }
+    // cout << "the first app of " << word << "was on: " << pi << endl;
+    index[pi].nrr = -1;
+    oldpi = pi;
+    // index[pi].next = -1;
+    while( index[pi].next != -1 ){
+        //Delete from the row and form the next
+        pi = index[pi].next;
+        index[oldpi].next = -1;
+        oldpi = index[pi].next;
+    }
 }
 void addToVocabularyAndIndex( string word, vector<Word>& vocabulary, vector<Index_row>& index, int nrr ){
     //Initialice the new row that will be added in index
@@ -327,13 +384,13 @@ vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, ve
     }
 }
 //Utility
-int stringToInt( string n ){
-    int number;
-    stringstream ss;
-    ss << n;
-    ss >> number;
-    return number;
-}
+// int stringToInt( string n ){
+//     int number;
+//     stringstream ss;
+//     ss << n;
+//     ss >> number;
+//     return number;
+// }
 int getTotalClients(){
     string path = "./clases/Client/clients_book.txt";
     string s;
@@ -347,4 +404,95 @@ int getTotalClients(){
     cout << "THERE ARE " << sTotal << "lines" << endl;
     in.close();	
     return sTotal;
+}
+Client getClientInfo( int nrr ){
+    //Read file clients book and return the client with the correct info
+    ifstream inFile;
+    string path = "clases/Client/clients_book.txt";
+    int position;
+    char data = '\0';
+    string client_register = "";            //String readed from the file
+    string phone, name, lastname, address; //substrings from the client register
+    Client c;
+    int counter;
+    inFile.open( path.c_str(), ios::app );
+    inFile.seekg( nrr * 85 );      //Read the register of the coincidences
+    counter = 85;                                    //The register has 85 chars
+    while( inFile >> noskipws >> data && counter > 0 ){
+        client_register += data;
+        data = '\0';
+        counter--;
+    }
+    // cout << "Full client register: " << client_register << endl;
+    for( int j = 0; j < 10; j++ ){
+        //First 10 are phone
+        phone += client_register[j];
+        // cout << "phone: " << phone << endl;
+    }
+    for( int j = 10; j < 25; j++ ){
+        //First 25 are name
+        name += client_register[j];
+        // cout << "name: " << name << endl;
+    }
+    for( int j = 35; j < 60; j++ ){
+        //First 25 are lastname
+        lastname += client_register[j];
+        // cout << "lastname: " << lastname << endl;
+    }
+    for( int j = 60; j < 85; j++ ){
+        //First 25 are address
+        address += client_register[j];
+        // cout << "address: " << address << endl;
+    }
+    //Build the client and then push it to the lsit
+    c.set_phone( phone );
+    c.set_name( name );
+    c.set_lastname( lastname );
+    c.set_address( address );
+    // cout << "The old client info:"<<endl;
+    // c.show();
+    return c;
+}
+void modifyClient( int nrr, Client oldClient, Client newClient, vector<Index_row>& index, vector<Word>& vocabulary ){
+    //Modify the corespondant vocabulary and index
+    deleteFromVocabularyAndIndex( index, vocabulary, oldClient.get_phone() );
+    deleteFromVocabularyAndIndex( index, vocabulary, oldClient.get_name() );
+    deleteFromVocabularyAndIndex( index, vocabulary, oldClient.get_lastname() );
+    //Now add the modified client to the vocabulary and index
+    addToVocabularyAndIndex( newClient.get_phone(), vocabulary, index, nrr );
+    addToVocabularyAndIndex( newClient.get_name(), vocabulary, index, nrr );
+    addToVocabularyAndIndex( newClient.get_lastname(), vocabulary, index, nrr );
+    replaceVocabularyFile( vocabulary );
+    replaceIndexFile( index );
+    //Go to the position of the register that has that nrr and overwrites the new info
+    cout << "------ Cliente modificado -------" << endl;
+    string file_path = "clases/Client/clients_book.txt";
+    int start_of_client_register = nrr * 85;
+    fstream fout( file_path.c_str(), fstream::in | fstream::out | fstream::binary );
+    //Make space
+    fout.seekp( start_of_client_register );
+    fout.write( "                                                                                     ", 85 );
+    //Write new client
+    fout.seekp( start_of_client_register );
+    fout.write( newClient.saveString().c_str(), 85 );
+    fout.close();
+}
+void deleteClient( int nrr, Client oldClient, vector<Index_row>& index, vector<Word>& vocabulary ){
+    cout << "Eliminando " ;
+    oldClient.show();
+    //Modify the corespondant vocabulary and index
+    deleteFromVocabularyAndIndex( index, vocabulary, oldClient.get_phone() );
+    deleteFromVocabularyAndIndex( index, vocabulary, oldClient.get_name() );
+    deleteFromVocabularyAndIndex( index, vocabulary, oldClient.get_lastname() );
+    replaceVocabularyFile( vocabulary );
+    replaceIndexFile( index );
+    //Go to the position of the register that has that nrr and overwrites the new info
+    string file_path = "clases/Client/clients_book.txt";
+    int start_of_client_register = nrr * 85;
+    cout << "------ Cliente eliminado -------" << start_of_client_register << endl;
+    fstream fout( file_path.c_str(), fstream::in | fstream::out | fstream::binary );
+    //Make space
+    fout.seekp( start_of_client_register );
+    fout.write( "                                                                                     ", 85 );
+    fout.close();
 }
