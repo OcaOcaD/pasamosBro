@@ -304,11 +304,3 @@ bool operator==(Bill &obj, int &id)
         return true;
     return false;
 }
-// std::istream &operator>>(std::istream &is, Bill& obj)
-// {
-//     std::vector<Product> p = load_products();
-//     std::cout << "\t************ Productos ************" << std::endl;
-//     for(auto elem : p)
-//         std::cout << elem << std::endl;
-//     std::cout << "\t***********************************" << std::endl;
-// }

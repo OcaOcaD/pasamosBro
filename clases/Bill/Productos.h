@@ -24,20 +24,20 @@ class Productos
         void set_quantity(int quantity);
         void set_price(float price);
         //GETTERS
-        std::string get_name() const;
-        std::string get_description() const;
         float get_price() const;
         int get_quantity() const;
+        std::string get_name() const;
+        std::string get_description() const;
         //FUNCTIONS
         void save();
         bool is_file_empty();
-        friend void reload_product(std::vector<Productos>& p);
         friend std::vector<Productos> load_products();
+        friend void reload_product(std::vector<Productos>& p);
         //OVERLOADS
+        friend bool operator==(Productos &obj, std::string &name);
         friend std::ostream &operator<<(std::ostream &os, Productos& obj);
         friend std::istream &operator>>(std::istream &is, Productos& obj);
         friend bool operator==(const Productos &obj, const Productos &obj1);
-        friend bool operator==(Productos &obj, std::string &name);
 };
 
 Productos::Productos()
@@ -123,7 +123,7 @@ void Productos::save()
 }
 std::vector<Productos> load_products()
 {
-    std::cout << "sad" << std::endl;
+    std::cout << " " << std::endl;
     std::string aux, lines;
     std::vector<Productos> products{};
     std::ifstream file("./clases/Bill/product.txt", std::ios::app);
