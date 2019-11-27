@@ -4,7 +4,7 @@
 #include "clases/Bill/BillMenu.h"
 #include "clases/Supplier/supplierMenu.h"
 #include "clases/Products/productsMenu.h"
-#include "clases/Client/clientMenu.h"
+// #include "clases/Client/clientMenu.h"
 
 using namespace std;
 
@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
             }
             case 5:{
                 //Clients || inverted indexes
-                clientsMenu();
+                // clientsMenu();
                 break;
             }
             case 7:{
