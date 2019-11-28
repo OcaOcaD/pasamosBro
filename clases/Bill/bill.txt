@@ -4,13 +4,13 @@ Id Cliente:69
 name:chocolatitos
 description:Tienen alcohol :)
 quantity:50
-price:666
+price:666.000000
 earned:1
 %
 name:pica fresas
 description:suculentos
 quantity:371
-price:18
+price:18.000000
 earned:2
 %
 Monto:702.000000
@@ -32,7 +32,7 @@ Id Cliente:69
 name:gansitos
 description:mejores que los dalmatas
 quantity:4882
-price:10
+price:10.000000
 earned:3
 %
 Monto:30.000000
@@ -43,7 +43,7 @@ Id Cliente:69
 name:chocolatitos
 description:Tienen alcohol :)
 quantity:50
-price:666
+price:666.000000
 earned:20
 %
 Monto:13320.000000
@@ -54,7 +54,24 @@ Id Cliente:69
 name:bocadines
 description:exquisitos
 quantity:58
-price:1
+price:1.000000
 earned:1
 %
 Monto:1.000000
+
+id:6
+Id Cliente:69
+%
+name:chocolatitos
+description:Tienen alcohol :)
+quantity:30
+price:666.000000
+earned:20
+%
+name:alitas
+description:rikolino
+quantity:56
+price:45.000000
+earned:2
+%
+Monto:13410.000000

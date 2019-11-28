@@ -5,7 +5,7 @@ price:18
 
 name:chocolatitos
 description:Tienen alcohol :)
-quantity:50
+quantity:30
 price:666
 
 name:gansitos
@@ -25,5 +25,5 @@ price:212
 
 name:alitas
 description:rikolino
-quantity:58
+quantity:56
 price:45

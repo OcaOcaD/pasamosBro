@@ -5,7 +5,7 @@
 // #include "SimpleLinkedList.h"
 #include "Product.h"
 using namespace std;
-const string WHITESPACE = " \n\r\t\f\v";
+// const string WHITESPACE = " \n\r\t\f\v";
 //********************************** Function prototypes
 // int uSure();														//Simple Yes or no confirmation
 string addSize( string something );									//Concat SIZE of the given string to the string
@@ -13,21 +13,21 @@ int askForProduct( SimpleLinkedList<Product> &profile );				//Displays a list of
 SimpleLinkedList<Product> readP( string path );						//Read the document and returns a lsit with vendor objects
 void updateFile( SimpleLinkedList<Product> &profile, string path );	//Takes the info of the runtime and overwrites the file.
 //Utilities
-string ltrim(const string& s);
-string rtrim(const string& s);
-string trim(const string& s);
-string ltrim(const string& s){
-	size_t start = s.find_first_not_of(WHITESPACE);
-	return (start == string::npos) ? "" : s.substr(start);
-}
-string rtrim(const string& s){
-	size_t end = s.find_last_not_of(WHITESPACE);
-	return (end == string::npos) ? "" : s.substr(0, end + 1);
-}
-string trim(const string& s){
-	return rtrim(ltrim(s));
-}
-int stringToInt( string num );
+// string ltrim(const string& s);
+// string rtrim(const string& s);
+// string trim(const string& s);
+// string ltrim(const string& s){
+// 	size_t start = s.find_first_not_of(WHITESPACE);
+// 	return (start == string::npos) ? "" : s.substr(start);
+// }
+// string rtrim(const string& s){
+// 	size_t end = s.find_last_not_of(WHITESPACE);
+// 	return (end == string::npos) ? "" : s.substr(0, end + 1);
+// }
+// string trim(const string& s){
+// 	return rtrim(ltrim(s));
+// }
+// int stringToInt( string num );
 //********************************** Main clients program
 void productsMenu(){
     int menu_opt_products, acc_opt, del_opt;
@@ -427,9 +427,9 @@ string addSize( string something ){
 }
 //Utilities
 
-int stringToInt( string num ){
-	stringstream ss(num);
-	int n;
-	ss >> n;
-	return n;
-}
+// int stringToInt( string num ){
+// 	stringstream ss(num);
+// 	int n;
+// 	ss >> n;
+// 	return n;
+// }

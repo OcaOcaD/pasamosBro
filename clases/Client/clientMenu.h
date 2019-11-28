@@ -32,7 +32,7 @@ void replaceVocabularyFile( vector<Word> vocabulary );
 int inVocabulary( vector<Word>& vocabulary, string searchedWord );
 void replaceIndexFile( vector<Index_row> index );
 //Utility
-
+int stringToInt( string data );
 int getTotalClients();  //returns the nrr based on the number of registers in the file
 
 //********************************** Main clients program
@@ -389,13 +389,13 @@ vector<Client> recoverClient( string search_string, vector<Word>& vocabulary, ve
     }
 }
 //Utility
-// int stringToInt( string n ){
-//     int number;
-//     stringstream ss;
-//     ss << n;
-//     ss >> number;
-//     return number;
-// }
+int stringToInt( string n ){
+    int number;
+    stringstream ss;
+    ss << n;
+    ss >> number;
+    return number;
+}
 int getTotalClients(){
     string path = "./clases/Client/clients_book.txt";
     string s;
