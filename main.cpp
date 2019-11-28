@@ -3,6 +3,7 @@
 #include <fstream>
 #include "clases/Bill/BillMenu.h"
 #include "clases/Client/clientMenu.h"
+#include "clases/Cipher/cipherMenu.h"
 #include "clases/Orders/ordersMenu.h"
 #include "clases/Accounts/AccountsMenu.h"
 #include "clases/Supplier/supplierMenu.h"
@@ -23,7 +24,8 @@ int main(int argc, char const *argv[])
         cout << "\t5)Clientes\t Indices invertidos " << endl;
         cout << "\t6)Hash" << endl;
         cout << "\t7)Serializacion " << endl;
-        cout << "\t9)Exit program" << endl;
+        cout << "\t10)Serializacion " << endl;
+        cout << "\t11)Exit program" << endl;
         cin >> opt;
         switch( opt ){
             case 1:{
@@ -56,7 +58,11 @@ int main(int argc, char const *argv[])
                 bill_menu();
                 break;
             }
-            case 9:{
+            case 10:{
+                cipherMenu();
+                break;
+            }
+            case 11:{
                 return 0;
                 break;
             }
@@ -64,6 +70,6 @@ int main(int argc, char const *argv[])
                 std::cout << "xd" << std::endl;
             }
         }
-    }while( opt != 9 );
+    }while( opt != 11 );
     return 0;
 }
