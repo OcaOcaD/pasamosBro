@@ -10,3 +10,9 @@ romo 8
 5243610 9
 donaldo 10
 colosio 11
+#deleted# -1
+#deleted# -1
+#deleted# -1
+666 15
+hola 16
+adios 17

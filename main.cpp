@@ -16,6 +16,7 @@ int main(int argc, char const *argv[])
 {
     bool main_exit = false;
     int opt;
+    
     do{
         cout << "\t1)Proveedores\t Delimitadores de campos " << endl;
         cout << "\t2)Productos\t Campos de dimension " << endl;

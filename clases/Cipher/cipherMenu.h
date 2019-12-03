@@ -16,27 +16,25 @@ void options();
 void cipherMenu();
 vector<vector<string>> obtainClient();
 vector<string> obtainRegistry(string jj);
-string trans(string jj);
+string trans(string jj, bool state);
 int findI(char);
 
-void cipher();
-void antiCipher();
+void cipher(bool state);
 
 void cipherMenu()
 {
     int opc;
-
     do{
         options();
         cin>>opc;
         
         switch(opc){
             case 1:{
-                cipher();
+                cipher(true);
                 break;
             }
             case 2:{
-                // cipher();
+                cipher(false);
                 break;
             }
             case 3:{
@@ -55,13 +53,13 @@ void options(){
          << "\t3)Salir" << endl << endl
          << "Elija una opcion: ";
 }
-void cipher(){
+void cipher(bool state){
     string tmp = "";
     vector<string> result;
     vector<vector<string>> clients = obtainClient();
     for(auto clie:clients){
         for(auto jj:clie){
-            tmp += trans(jj) + "       ";
+            tmp += trans(jj, state) + "       ";
         }
         result.push_back(tmp);
         tmp="";
@@ -75,14 +73,17 @@ void cipher(){
     }
     file.close();
 }
-string trans(string jj){
+string trans(string jj, bool state){
     int index;
     int juas;
     string result = "";
 
     for(auto c:jj){
         index = findI(c);
-        juas = (KEY+index)%SIZE;
+        if(state)
+            juas = index+(KEY%SIZE);
+        else
+            juas = index-(KEY%SIZE);
         result += ALPHA[juas];
     }
     return result;
@@ -102,7 +103,7 @@ vector<vector<string>> obtainClient(){
     vector<vector<string>> result;
     ifstream file(PATH, ios::in);
     while(getline(file, tmp, '\n')){
-        cout << "LINE ->  " << tmp << endl;
+        // cout << "LINE ->  " << tmp << endl;
         result.push_back(obtainRegistry(tmp));
     }
     file.close();

@@ -20,6 +20,7 @@ void reset_idBill(vector<Bill>& bills);
 
 int bill_menu()
 {
+    cout << "hola " << endl;
     int client_opt;
     int quantity;
     string name;
